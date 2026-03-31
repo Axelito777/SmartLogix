@@ -1,0 +1,46 @@
+package com.smartlogix.ms_clientes.controller;
+
+import com.smartlogix.ms_clientes.dto.ClienteRequest;
+import com.smartlogix.ms_clientes.dto.ClienteResponse;
+import com.smartlogix.ms_clientes.service.ClienteService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/clientes")
+@RequiredArgsConstructor
+public class ClienteController {
+
+    private final ClienteService clienteService;
+
+    // GET /api/clientes
+    @GetMapping
+    public ResponseEntity<List<ClienteResponse>> listar() {
+        return ResponseEntity.ok(clienteService.listar());
+    }
+
+    // GET /api/clientes/{id}
+    @GetMapping("/{id}")
+    public ResponseEntity<ClienteResponse> obtener(
+            @PathVariable String id) {
+        return ResponseEntity.ok(clienteService.obtener(id));
+    }
+
+    // POST /api/clientes
+    @PostMapping
+    public ResponseEntity<ClienteResponse> crear(
+            @RequestBody ClienteRequest request) {
+        return ResponseEntity.ok(clienteService.crear(request));
+    }
+
+    // PUT /api/clientes/{id}
+    @PutMapping("/{id}")
+    public ResponseEntity<ClienteResponse> actualizar(
+            @PathVariable String id,
+            @RequestBody ClienteRequest request) {
+        return ResponseEntity.ok(
+            clienteService.actualizar(id, request));
+    }
+}
