@@ -1,0 +1,19 @@
+server:
+  port: 8088
+
+spring:
+  application:
+    name: ms-proveedores
+  datasource:
+    # Dejamos el espacio listo para cuando tu compañero pase la URL
+    url: PEGA_LA_URL_AQUI
+    username: postgres
+    password: GkCMQaTgcoo4ETva
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
