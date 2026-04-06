@@ -1,38 +1,35 @@
-package com.smartlogix.ms_inventario.model;
+package com.smartlogix.ms_pedidos.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity
-@Table(name = "productos")
-public class Producto {
+@Table(name = "pedidos")
+public class Pedido {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(nullable = false)
-    private String nombre;
-
-    private String descripcion;
+    @Column(name = "cliente_id", nullable = false)
+    private String clienteId;
 
     @Column(nullable = false)
-    private BigDecimal precio;
+    private String estado;
 
     @Column(nullable = false)
-    private Integer stock;
+    private String tipo;
 
-    @Column(name = "stock_minimo", nullable = false)
-    private Integer stockMinimo;
+    private BigDecimal total;
 
-    @Column(name = "bodega_id")
-    private String bodegaId;
-
-    @Column(name = "proveedor_id")
-    private String proveedorId;
+    // Un pedido tiene muchos detalles
+    @OneToMany(mappedBy = "pedido", 
+               cascade = CascadeType.ALL)
+    private List<DetallePedido> detalles;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -44,6 +41,7 @@ public class Producto {
     protected void onCreate() {
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
+        estado = "PENDIENTE";
     }
 
     @PreUpdate

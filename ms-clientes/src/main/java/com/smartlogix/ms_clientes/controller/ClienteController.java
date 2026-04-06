@@ -2,6 +2,7 @@ package com.smartlogix.ms_clientes.controller;
 
 import com.smartlogix.ms_clientes.dto.ClienteRequest;
 import com.smartlogix.ms_clientes.dto.ClienteResponse;
+import com.smartlogix.ms_clientes.dto.PedidoResponse;
 import com.smartlogix.ms_clientes.service.ClienteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -42,5 +43,9 @@ public class ClienteController {
             @RequestBody ClienteRequest request) {
         return ResponseEntity.ok(
             clienteService.actualizar(id, request));
+    }
+    @GetMapping("/{id}/pedidos")
+    public ResponseEntity<List<PedidoResponse>> getPedidos(@PathVariable String id) {
+        return ResponseEntity.ok(clienteService.getPedidosByCliente(id));
     }
 }

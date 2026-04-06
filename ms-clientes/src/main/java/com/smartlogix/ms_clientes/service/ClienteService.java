@@ -5,10 +5,11 @@ import com.smartlogix.ms_clientes.dto.ClienteResponse;
 import com.smartlogix.ms_clientes.model.Cliente;
 import com.smartlogix.ms_clientes.repository.ClienteRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
+import com.smartlogix.ms_clientes.client.PedidosClient;
+import com.smartlogix.ms_clientes.dto.PedidoResponse;
 
 @Service
 @RequiredArgsConstructor
@@ -81,4 +82,13 @@ public class ClienteService {
                 cliente.getCreatedAt()
         );
     }
+    private final PedidosClient pedidosClient;
+    public List<PedidoResponse> getPedidosByCliente(String clienteId) {
+    // Verifica que el cliente existe
+    clienteRepository.findById(clienteId)
+            .orElseThrow(() -> 
+                new RuntimeException("Cliente no encontrado"));
+    
+    return pedidosClient.getPedidosByCliente(clienteId);
+}
 }
