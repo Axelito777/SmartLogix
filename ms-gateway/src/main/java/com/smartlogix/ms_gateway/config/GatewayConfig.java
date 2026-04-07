@@ -1,4 +1,4 @@
-package com.smartlogi.ms_gateway.config;
+package com.smartlogix.ms_gateway.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

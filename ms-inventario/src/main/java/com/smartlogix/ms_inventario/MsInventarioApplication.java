@@ -1,3 +1,14 @@
+
+
+
+
+
+
+
+
+
+
+
 package com.smartlogix.ms_inventario;
 
 import org.springframework.boot.SpringApplication;

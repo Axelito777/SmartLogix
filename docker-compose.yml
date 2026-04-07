@@ -74,6 +74,66 @@ services:
     networks:
       - smartlogix-net
 
+  ms-proveedores:
+    build: ./ms-proveedores
+    ports:
+      - "8086:8086"
+    depends_on:
+      ms-eureka:
+        condition: service_healthy
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://ms-eureka:8761/eureka/
+    networks:
+      - smartlogix-net
+
+  ms-envios:
+    build: ./ms-envios
+    ports:
+      - "8085:8085"
+    depends_on:
+      ms-eureka:
+        condition: service_healthy
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://ms-eureka:8761/eureka/
+    networks:
+      - smartlogix-net
+
+  ms-pagos:
+    build: ./ms-pagos
+    ports:
+      - "8087:8087"
+    depends_on:
+      ms-eureka:
+        condition: service_healthy
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://ms-eureka:8761/eureka/
+    networks:
+      - smartlogix-net
+      
+  ms-notificaciones:
+    build: ./ms-notificaciones
+    ports:
+      - "8088:8088"
+    depends_on:
+      ms-eureka:
+        condition: service_healthy
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://ms-eureka:8761/eureka/
+    networks:
+      - smartlogix-net
+
+  ms-reportes:
+    build: ./ms-reportes
+    ports:
+      - "8089:8089"
+    depends_on:
+      ms-eureka:
+        condition: service_healthy
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://ms-eureka:8761/eureka/
+    networks:
+      - smartlogix-net
+
 networks:
   smartlogix-net:
     driver: bridge
