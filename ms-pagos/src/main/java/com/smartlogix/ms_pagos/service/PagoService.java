@@ -1,30 +1,45 @@
 package com.smartlogix.ms_pagos.service;
 
-import com.smartlogix.ms_pagos.entity.Pago;
+import com.smartlogix.ms_pagos.dto.PagoRequest;
+import com.smartlogix.ms_pagos.dto.PagoResponse;
+import com.smartlogix.ms_pagos.exception.PagoNotFoundException;
+import com.smartlogix.ms_pagos.model.Pago;
 import com.smartlogix.ms_pagos.repository.PagoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class PagoService {
 
-    @Autowired
-    private PagoRepository pagoRepository;
+    private final PagoRepository pagoRepository;
 
-    public Pago procesarPago(Pago pago) {
-        if (pago.getEstado() == null) {
-            pago.setEstado("PROCESADO");
-        }
-        return pagoRepository.save(pago);
+    public PagoResponse procesar(PagoRequest request) {
+        Pago pago = new Pago();
+        pago.setPedidoId(request.getPedidoId());
+        pago.setMonto(request.getMonto());
+        pago.setMetodoPago(request.getMetodoPago());
+        pago.setEstado("PROCESADO");
+        pagoRepository.save(pago);
+        return convertirAResponse(pago);
     }
 
-    public Optional<Pago> obtenerPorId(Long id) {
-        return pagoRepository.findById(id);
+    public PagoResponse obtener(Long id) {
+        Pago pago = pagoRepository.findById(id)
+                .orElseThrow(() -> new PagoNotFoundException(id));
+        return convertirAResponse(pago);
     }
 
-    public List<Pago> obtenerPorPedido(Long pedidoId) {
-        return pagoRepository.findByPedidoId(pedidoId);
+    public List<PagoResponse> obtenerPorPedido(Long pedidoId) {
+        return pagoRepository.findByPedidoId(pedidoId)
+                .stream()
+                .map(this::convertirAResponse)
+                .collect(Collectors.toList());
+    }
+
+    private PagoResponse convertirAResponse(Pago p) {
+        return new PagoResponse(p.getId(), p.getPedidoId(), p.getMonto(), p.getEstado(), p.getMetodoPago());
     }
 }

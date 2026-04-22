@@ -1,7 +1,9 @@
 package com.smartlogix.ms_envios.repository;
 
 import org.springframework.stereotype.Repository;
-import com.smartlogix.ms_envios.entity.Envio;
+
+import com.smartlogix.ms_envios.model.Envio;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 @Repository

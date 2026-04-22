@@ -1,13 +1,13 @@
 server:
-  port: 8089
+  port: 8087
 
 spring:
   application:
     name: ms-pagos
   datasource:
-    url: jdbc:postgresql://localhost:5432/TU_BASE_DE_DATOS # Cambia esto si tu BD se llama distinto
-    username: postgres
-    password: GkCMQaTgcoo4ETva # Confirma si esta es tu clave
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://aws-1-sa-east-1.pooler.supabase.com:6543/postgres?sslmode=require}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres.gkcyyzzaizzuglmyetpe}
+    password: ${SPRING_DATASOURCE_PASSWORD:GkCMQaTgcoo4ETva}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -16,3 +16,10 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://localhost:8761/eureka/}
+  instance:
+    prefer-ip-address: true

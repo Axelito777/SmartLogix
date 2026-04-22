@@ -5,9 +5,9 @@ spring:
   application:
     name: ms-notificaciones
   datasource:
-    url: jdbc:postgresql://aws-1-sa-east-1.pooler.supabase.com:6543/postgres?sslmode=require
-    username: postgres.gkcyyzzaizzuglmyetpe
-    password: GkCMQaTgcoo4ETva
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://aws-1-sa-east-1.pooler.supabase.com:6543/postgres?sslmode=require}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres.gkcyyzzaizzuglmyetpe}
+    password: ${SPRING_DATASOURCE_PASSWORD:GkCMQaTgcoo4ETva}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -16,3 +16,10 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://localhost:8761/eureka/}
+  instance:
+    prefer-ip-address: true

@@ -1,30 +1,39 @@
 package com.smartlogix.ms_envios.controller;
 
-import com.smartlogix.ms_envios.entity.Envio;
+import com.smartlogix.ms_envios.dto.EnvioRequest;
+import com.smartlogix.ms_envios.dto.EnvioResponse;
 import com.smartlogix.ms_envios.service.EnvioService;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+import java.util.Map;
 
 @RestController
-@RequestMapping("/api/envios") // Esta es la URL base de este microservicio
+@RequestMapping("/api/envios")
+@RequiredArgsConstructor
 public class EnvioController {
 
-    @Autowired
-    private EnvioService envioService;
+    private final EnvioService envioService;
 
-    // POST: Para crear un nuevo envío (ej. cuando se confirma un pedido)
-    @PostMapping
-    public ResponseEntity<Envio> crearEnvio(@RequestBody Envio envio) {
-        Envio nuevoEnvio = envioService.crearEnvio(envio);
-        return ResponseEntity.ok(nuevoEnvio);
+    @PostMapping("/crear")
+    public ResponseEntity<EnvioResponse> crear(@RequestBody Map<String, Object> body) {
+        EnvioRequest request = new EnvioRequest();
+        request.setPedidoId(Long.valueOf(body.get("pedido_id").toString()));
+        if (body.get("transportista") != null) {
+            request.setTransportista(body.get("transportista").toString());
+        }
+        return ResponseEntity.ok(envioService.crear(request));
     }
 
-    // GET: Para ver todos loss envíos y su estado de tracking
     @GetMapping
-    public ResponseEntity<List<Envio>> obtenerEnvios() {
-        return ResponseEntity.ok(envioService.obtenerTodos());
+    public ResponseEntity<List<EnvioResponse>> listar() {
+        return ResponseEntity.ok(envioService.listar());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<EnvioResponse> obtener(@PathVariable Long id) {
+        return ResponseEntity.ok(envioService.obtener(id));
     }
 }

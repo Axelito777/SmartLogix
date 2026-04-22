@@ -2,33 +2,29 @@ package com.smartlogix.ms_notificaciones.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.smartlogix.ms_notificaciones.entity.Notificacion;
-import com.smartlogix.ms_notificaciones.repository.NotificacionRepository;
+import com.smartlogix.ms_notificaciones.dto.NotificacionRequest;
+import com.smartlogix.ms_notificaciones.dto.NotificacionResponse;
+import com.smartlogix.ms_notificaciones.service.NotificacionService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/notificaciones")
+@RequiredArgsConstructor
 public class NotificacionController {
 
-    @Autowired
-    private NotificacionRepository repository;
+    private final NotificacionService notificacionService;
 
-    // 1. POST /api/notificaciones/enviar
     @PostMapping("/enviar")
-    public Notificacion enviarNotificacion(@RequestBody Notificacion notificacion) {
-        return repository.save(notificacion);
+    public ResponseEntity<NotificacionResponse> enviar(@Valid @RequestBody NotificacionRequest request) {
+        return ResponseEntity.ok(notificacionService.enviar(request));
     }
 
-    // 2. GET /api/notificaciones/usuario/{id}
     @GetMapping("/usuario/{id}")
-    public List<Notificacion> obtenerPorUsuario(@PathVariable Long id) {
-        return repository.findByUsuarioId(id);
+    public ResponseEntity<List<NotificacionResponse>> obtenerPorUsuario(@PathVariable Long id) {
+        return ResponseEntity.ok(notificacionService.obtenerPorUsuario(id));
     }
 }

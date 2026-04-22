@@ -100,6 +100,93 @@ services:
       - smartlogix-net
     restart: always
 
+  ms-envios:
+    build: ./ms-envios
+    ports:
+      - "8085:8085"
+    depends_on:
+      ms-eureka:
+        condition: service_healthy
+    environment:
+    - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://ms-eureka:8761/eureka/
+    - SPRING_DATASOURCE_URL=jdbc:postgresql://aws-1-sa-east-1.pooler.supabase.com:6543/postgres?sslmode=require
+    - SPRING_DATASOURCE_USERNAME=postgres.gkcyyzzaizzuglmyetpe
+    - SPRING_DATASOURCE_PASSWORD=GkCMQaTgcoo4ETva
+    - JWT_SECRET=smartlogix-secret-key-2024-super-segura-para-produccion-abc123
+    networks:
+      - smartlogix-net
+    restart: always
+
+  ms-proveedores:
+    build: ./ms-proveedores
+    ports:
+      - "8086:8086"
+    depends_on:
+      ms-eureka:
+        condition: service_healthy
+    environment:
+    - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://ms-eureka:8761/eureka/
+    - SPRING_DATASOURCE_URL=jdbc:postgresql://aws-1-sa-east-1.pooler.supabase.com:6543/postgres?sslmode=require
+    - SPRING_DATASOURCE_USERNAME=postgres.gkcyyzzaizzuglmyetpe
+    - SPRING_DATASOURCE_PASSWORD=GkCMQaTgcoo4ETva
+    - JWT_SECRET=smartlogix-secret-key-2024-super-segura-para-produccion-abc123
+    networks:
+      - smartlogix-net
+    restart: always
+
+  ms-pagos:
+    build: ./ms-pagos
+    ports:
+      - "8087:8087"
+    depends_on:
+      ms-eureka:
+        condition: service_healthy
+    environment:
+    - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://ms-eureka:8761/eureka/
+    - SPRING_DATASOURCE_URL=jdbc:postgresql://aws-1-sa-east-1.pooler.supabase.com:6543/postgres?sslmode=require
+    - SPRING_DATASOURCE_USERNAME=postgres.gkcyyzzaizzuglmyetpe
+    - SPRING_DATASOURCE_PASSWORD=GkCMQaTgcoo4ETva
+    - JWT_SECRET=smartlogix-secret-key-2024-super-segura-para-produccion-abc123
+    networks:
+      - smartlogix-net
+    restart: always
+
+  ms-notificaciones:
+    build: ./ms-notificaciones
+    ports:
+      - "8088:8088"
+    depends_on:
+      ms-eureka:
+        condition: service_healthy
+    environment:
+    - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://ms-eureka:8761/eureka/
+    - SPRING_DATASOURCE_URL=jdbc:postgresql://aws-1-sa-east-1.pooler.supabase.com:6543/postgres?sslmode=require
+    - SPRING_DATASOURCE_USERNAME=postgres.gkcyyzzaizzuglmyetpe
+    - SPRING_DATASOURCE_PASSWORD=GkCMQaTgcoo4ETva
+    - JWT_SECRET=smartlogix-secret-key-2024-super-segura-para-produccion-abc123
+    networks:
+      - smartlogix-net
+    restart: always
+    
+  ms-reportes:
+    build: ./ms-reportes
+    ports:
+      - "8089:8089"
+    depends_on:
+      ms-eureka:
+        condition: service_healthy
+    environment:
+    - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://ms-eureka:8761/eureka/
+    - SPRING_DATASOURCE_URL=jdbc:postgresql://aws-1-sa-east-1.pooler.supabase.com:6543/postgres?sslmode=require
+    - SPRING_DATASOURCE_USERNAME=postgres.gkcyyzzaizzuglmyetpe
+    - SPRING_DATASOURCE_PASSWORD=GkCMQaTgcoo4ETva
+    - JWT_SECRET=smartlogix-secret-key-2024-super-segura-para-produccion-abc123
+    networks:
+      - smartlogix-net
+    restart: always
+
+    
+
 networks:
   smartlogix-net:
     driver: bridge

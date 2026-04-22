@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/pedidos")
@@ -39,8 +40,8 @@ public class PedidoController {
     @PutMapping("/{id}/estado")
     public ResponseEntity<PedidoResponse> actualizarEstado(
             @PathVariable String id,
-            @RequestParam String estado) {
+            @RequestBody Map<String, String> body) {
         return ResponseEntity.ok(
-            pedidoService.actualizarEstado(id, estado));
+            pedidoService.actualizarEstado(id, body.get("estado")));
     }
 }
