@@ -11,18 +11,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/reportes")
-@RequiredArgsConstructor
+@RequiredArgsConstructor // Esta anotación de Lombok crea el constructor para reporteService
 public class ReporteController {
 
     private final ReporteService reporteService;
 
     @GetMapping("/ventas")
     public ResponseEntity<ReporteVentasDTO> reporteVentas() {
+        // Llama al servicio para obtener el DTO de ventas
         return ResponseEntity.ok(reporteService.generarReporteVentas());
     }
 
     @GetMapping("/inventario")
     public ResponseEntity<ReporteInventarioDTO> reporteInventario() {
+        // Llama al servicio para obtener el DTO de inventario
         return ResponseEntity.ok(reporteService.generarReporteInventario());
     }
 }
