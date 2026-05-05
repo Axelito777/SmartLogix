@@ -26,15 +26,16 @@ jobs:
 
     - name: Build y Push imágenes Backend
       run: |
-        SERVICES="ms-eureka ms-gateway ms-auth"
-        for SERVICE in $SERVICES; do
-          echo "Building $SERVICE..."
-          cd $SERVICE
-          ./mvnw package -DskipTests -q
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/$SERVICE:latest .
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/$SERVICE:latest
-          cd ..
-        done
+         SERVICES="ms-eureka ms-gateway ms-auth"
+          for SERVICE in $SERVICES; do
+            echo "Building $SERVICE..."
+            cd $SERVICE
+            chmod +x mvnw
+            ./mvnw package -DskipTests -q
+            docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/$SERVICE:latest .
+            docker push ${{ secrets.DOCKERHUB_USERNAME }}/$SERVICE:latest
+            cd ..
+          done
 
     - name: Configurar credenciales AWS
       uses: aws-actions/configure-aws-credentials@v4
