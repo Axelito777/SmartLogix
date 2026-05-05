@@ -7,7 +7,7 @@ import lombok.Data;
 public class EnvioRequest {
 
     @NotNull(message = "El pedidoId es obligatorio")
-    private Long pedidoId;
+    private String pedidoId;
 
     private String transportista;
 }

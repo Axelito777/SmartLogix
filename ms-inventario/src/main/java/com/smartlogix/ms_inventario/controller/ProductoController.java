@@ -49,4 +49,19 @@ public class ProductoController {
     public ResponseEntity<List<ProductoResponse>> bajoStock() {
         return ResponseEntity.ok(productoService.bajoStock());
     }
+
+    // PUT /api/inventario/productos/{id}
+    @PutMapping("/productos/{id}")
+    public ResponseEntity<ProductoResponse> actualizar(
+            @PathVariable String id,
+            @RequestBody ProductoRequest request) {
+        return ResponseEntity.ok(productoService.actualizar(id, request));
+    }
+
+    // DELETE /api/inventario/productos/{id}
+    @DeleteMapping("/productos/{id}")
+    public ResponseEntity<Void> eliminar(@PathVariable String id) {
+        productoService.eliminar(id);
+        return ResponseEntity.noContent().build();
+    }
 }

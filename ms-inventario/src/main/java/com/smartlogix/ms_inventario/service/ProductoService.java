@@ -87,4 +87,30 @@ public class ProductoService {
                 producto.getCreatedAt()
         );
     }
+
+    // Actualizar producto completo
+    public ProductoResponse actualizar(String id, ProductoRequest request) {
+        Producto producto = productoRepository.findById(id)
+                .orElseThrow(() ->
+                    new RuntimeException("Producto no encontrado"));
+
+        producto.setNombre(request.getNombre());
+        producto.setDescripcion(request.getDescripcion());
+        producto.setPrecio(request.getPrecio());
+        producto.setStock(request.getStock());
+        producto.setStockMinimo(request.getStockMinimo());
+        producto.setBodegaId(request.getBodegaId());
+        producto.setProveedorId(request.getProveedorId());
+
+        productoRepository.save(producto);
+        return convertirAResponse(producto);
+    }
+
+    // Eliminar producto
+    public void eliminar(String id) {
+        productoRepository.findById(id)
+                .orElseThrow(() ->
+                    new RuntimeException("Producto no encontrado"));
+        productoRepository.deleteById(id);
+    }
 }

@@ -27,4 +27,9 @@ public class NotificacionController {
     public ResponseEntity<List<NotificacionResponse>> obtenerPorUsuario(@PathVariable Long id) {
         return ResponseEntity.ok(notificacionService.obtenerPorUsuario(id));
     }
+
+    @GetMapping
+    public ResponseEntity<List<NotificacionResponse>> listar() {
+        return ResponseEntity.ok(notificacionService.listar());
+    }
 }

@@ -14,7 +14,7 @@ public class Envio {
     private Long id;
 
     @Column(name = "pedido_id", nullable = false)
-    private Long pedidoId;
+    private String pedidoId;
 
     @Column(name = "tracking_number", unique = true, nullable = false)
     private String trackingNumber;

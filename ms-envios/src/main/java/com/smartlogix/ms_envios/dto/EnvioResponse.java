@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class EnvioResponse {
     private Long id;
-    private Long pedidoId;
+    private String pedidoId;
     private String trackingNumber;
     private String estado;
     private String transportista;

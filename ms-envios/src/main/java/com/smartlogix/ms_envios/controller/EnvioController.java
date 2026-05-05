@@ -20,7 +20,7 @@ public class EnvioController {
     @PostMapping("/crear")
     public ResponseEntity<EnvioResponse> crear(@RequestBody Map<String, Object> body) {
         EnvioRequest request = new EnvioRequest();
-        request.setPedidoId(Long.valueOf(body.get("pedido_id").toString()));
+        request.setPedidoId(body.get("pedido_id").toString());
         if (body.get("transportista") != null) {
             request.setTransportista(body.get("transportista").toString());
         }

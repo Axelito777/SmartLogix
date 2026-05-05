@@ -42,4 +42,11 @@ public class PagoService {
     private PagoResponse convertirAResponse(Pago p) {
         return new PagoResponse(p.getId(), p.getPedidoId(), p.getMonto(), p.getEstado(), p.getMetodoPago());
     }
+
+    public List<PagoResponse> listar() {
+        return pagoRepository.findAll()
+                .stream()
+                .map(this::convertirAResponse)
+                .collect(Collectors.toList());
+    }
 }

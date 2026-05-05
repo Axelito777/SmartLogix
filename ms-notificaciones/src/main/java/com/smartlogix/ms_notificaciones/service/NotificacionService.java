@@ -30,6 +30,13 @@ public class NotificacionService {
                 .collect(Collectors.toList());
     }
 
+    public List<NotificacionResponse> listar() {
+        return notificacionRepository.findAll()
+                .stream()
+                .map(this::convertirAResponse)
+                .collect(Collectors.toList());
+    }
+
     private NotificacionResponse convertirAResponse(Notificacion n) {
         return new NotificacionResponse(n.getId(), n.getUsuarioId(), n.getMensaje(), n.getFechaEnvio());
     }
