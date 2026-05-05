@@ -61,7 +61,9 @@ jobs:
           sleep 20
           docker run -d --name ms-gateway -p 8080:8080 --restart always \
             -e EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://localhost:8761/eureka/ \
+            -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
             ${{ secrets.DOCKERHUB_USERNAME }}/ms-gateway:latest
           docker run -d --name ms-auth -p 8081:8081 --restart always \
             -e EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://localhost:8761/eureka/ \
+            -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
             ${{ secrets.DOCKERHUB_USERNAME }}/ms-auth:latest
