@@ -45,20 +45,23 @@ jobs:
         aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
         aws-region: ${{ secrets.AWS_REGION }}
 
-    - name: Desplegar en EC2 App vía SSM
-      run: |
-        aws ssm send-command \
-          --instance-ids ${{ secrets.EC2_APP_INSTANCE_ID }} \
-          --document-name "AWS-RunShellScript" \
-          --parameters '{"commands":[
-            "docker pull ${{ secrets.DOCKERHUB_USERNAME }}/ms-eureka:latest",
-            "docker pull ${{ secrets.DOCKERHUB_USERNAME }}/ms-gateway:latest",
-            "docker pull ${{ secrets.DOCKERHUB_USERNAME }}/ms-auth:latest",
-            "docker stop ms-eureka ms-gateway ms-auth || true",
-            "docker rm ms-eureka ms-gateway ms-auth || true",
-            "docker run -d --name ms-eureka -p 8761:8761 --restart always ${{ secrets.DOCKERHUB_USERNAME }}/ms-eureka:latest",
-            "sleep 20",
-            "docker run -d --name ms-gateway -p 8080:8080 --restart always -e EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://localhost:8761/eureka/ ${{ secrets.DOCKERHUB_USERNAME }}/ms-gateway:latest",
-            "docker run -d --name ms-auth -p 8081:8081 --restart always -e EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://localhost:8761/eureka/ ${{ secrets.DOCKERHUB_USERNAME }}/ms-auth:latest"
-          ]}' \
-          --output text
+    - name: Desplegar en EC2 App vía SSH
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USER }}
+        key: ${{ secrets.EC2_SSH_KEY }}
+        script: |
+          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/ms-eureka:latest
+          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/ms-gateway:latest
+          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/ms-auth:latest
+          docker stop ms-eureka ms-gateway ms-auth || true
+          docker rm ms-eureka ms-gateway ms-auth || true
+          docker run -d --name ms-eureka -p 8761:8761 --restart always ${{ secrets.DOCKERHUB_USERNAME }}/ms-eureka:latest
+          sleep 20
+          docker run -d --name ms-gateway -p 8080:8080 --restart always \
+            -e EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://localhost:8761/eureka/ \
+            ${{ secrets.DOCKERHUB_USERNAME }}/ms-gateway:latest
+          docker run -d --name ms-auth -p 8081:8081 --restart always \
+            -e EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://localhost:8761/eureka/ \
+            ${{ secrets.DOCKERHUB_USERNAME }}/ms-auth:latest
