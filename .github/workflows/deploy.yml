@@ -57,13 +57,17 @@ jobs:
           docker pull ${{ secrets.DOCKERHUB_USERNAME }}/ms-auth:latest
           docker stop ms-eureka ms-gateway ms-auth || true
           docker rm ms-eureka ms-gateway ms-auth || true
-          docker run -d --name ms-eureka -p 8761:8761 --restart always ${{ secrets.DOCKERHUB_USERNAME }}/ms-eureka:latest
-          sleep 20
-          docker run -d --name ms-gateway -p 8080:8080 --restart always \
+           docker run -d --name ms-gateway -p 8080:8080 --restart always \
             -e EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://localhost:8761/eureka/ \
             -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
+            -e SPRING_DATASOURCE_URL=${{ secrets.DB_URL }} \
+            -e SPRING_DATASOURCE_USERNAME=${{ secrets.DB_USERNAME }} \
+            -e SPRING_DATASOURCE_PASSWORD=${{ secrets.DB_PASSWORD }} \
             ${{ secrets.DOCKERHUB_USERNAME }}/ms-gateway:latest
-          docker run -d --name ms-auth -p 8081:8081 --restart always \
+            docker run -d --name ms-auth -p 8081:8081 --restart always \
             -e EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://localhost:8761/eureka/ \
             -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
+            -e SPRING_DATASOURCE_URL=${{ secrets.DB_URL }} \
+            -e SPRING_DATASOURCE_USERNAME=${{ secrets.DB_USERNAME }} \
+            -e SPRING_DATASOURCE_PASSWORD=${{ secrets.DB_PASSWORD }} \
             ${{ secrets.DOCKERHUB_USERNAME }}/ms-auth:latest
