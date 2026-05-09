@@ -60,7 +60,7 @@ jobs:
            docker run -d --name ms-eureka -p 8761:8761 --restart always \
             ${{ secrets.DOCKERHUB_USERNAME }}/ms-eureka:latest
            docker run -d --name ms-gateway -p 8080:8080 --restart always \
-            -e EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://localhost:8761/eureka/ \
+            -e EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://10.0.143.193:8761/eureka/ \
             -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
             -e SPRING_DATASOURCE_URL=${{ secrets.DB_URL }} \
             -e SPRING_DATASOURCE_USERNAME=${{ secrets.DB_USERNAME }} \
