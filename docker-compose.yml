@@ -3,7 +3,9 @@ version: '3.8'
 services:
 
   ms-eureka:
-    build: ./ms-eureka
+    build:
+      context: .
+      dockerfile: ms-eureka/Dockerfile
     ports:
       - "8761:8761"
     networks:
@@ -16,7 +18,9 @@ services:
       retries: 10
 
   ms-auth:
-    build: ./ms-auth
+    build:
+      context: .
+      dockerfile: ms-auth/Dockerfile
     ports:
       - "8081:8081"
     depends_on:
@@ -33,7 +37,9 @@ services:
     restart: always
 
   ms-clientes:
-    build: ./ms-clientes
+    build:
+      context: .
+      dockerfile: ms-clientes/Dockerfile
     ports:
       - "8082:8082"
     depends_on:
@@ -50,7 +56,9 @@ services:
     restart: always
 
   ms-inventario:
-    build: ./ms-inventario
+    build:
+      context: .
+      dockerfile: ms-inventario/Dockerfile
     ports:
       - "8083:8083"
     depends_on:
@@ -67,7 +75,9 @@ services:
     restart: always
 
   ms-pedidos:
-    build: ./ms-pedidos
+    build:
+      context: .
+      dockerfile: ms-pedidos/Dockerfile
     ports:
       - "8084:8084"
     depends_on:
@@ -84,7 +94,9 @@ services:
     restart: always
 
   ms-gateway:
-    build: ./ms-gateway
+    build:
+      context: .
+      dockerfile: ms-gateway/Dockerfile
     ports:
       - "8080:8080"
     depends_on:
@@ -101,7 +113,9 @@ services:
     restart: always
 
   ms-envios:
-    build: ./ms-envios
+    build:
+      context: .
+      dockerfile: ms-envios/Dockerfile
     ports:
       - "8085:8085"
     depends_on:
@@ -118,7 +132,9 @@ services:
     restart: always
 
   ms-proveedores:
-    build: ./ms-proveedores
+    build:
+      context: .
+      dockerfile: ms-proveedores/Dockerfile
     ports:
       - "8086:8086"
     depends_on:
@@ -135,7 +151,9 @@ services:
     restart: always
 
   ms-pagos:
-    build: ./ms-pagos
+    build:
+      context: .
+      dockerfile: ms-pagos/Dockerfile
     ports:
       - "8087:8087"
     depends_on:
@@ -152,7 +170,9 @@ services:
     restart: always
 
   ms-notificaciones:
-    build: ./ms-notificaciones
+    build:
+      context: .
+      dockerfile: ms-notificaciones/Dockerfile
     ports:
       - "8088:8088"
     depends_on:
@@ -169,7 +189,9 @@ services:
     restart: always
     
   ms-reportes:
-    build: ./ms-reportes
+    build:
+      context: .
+      dockerfile: ms-reportes/Dockerfile
     ports:
       - "8089:8089"
     depends_on:
