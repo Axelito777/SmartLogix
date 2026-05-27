@@ -1,0 +1,914 @@
+{
+  "info": {
+    "_postman_id": "smartlogix-collection-v1",
+    "name": "SmartLogix API",
+    "description": "Colección completa de endpoints de la plataforma SmartLogix.\n\nUsa el API Gateway como punto de entrada único (puerto 8080).\n\n**Flujo de inicio:**\n1. Ejecutar `POST /api/auth/login` — el token se guarda automáticamente en la variable `token`.\n2. El resto de peticiones usan `Authorization: Bearer {{token}}` de forma automática.\n\n**Variables de entorno disponibles:**\n- `baseUrl` → URL base del gateway\n- `token` → JWT de autenticación\n- `clienteId`, `productoId`, `pedidoId`, `proveedorId`, `pagoId`, `envioId` → IDs de ejemplo",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string",
+      "description": "URL base del API Gateway. Cambia a http://localhost:808X para acceso directo al microservicio."
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string",
+      "description": "JWT obtenido tras POST /api/auth/login. Se rellena automáticamente con el script del login."
+    },
+    {
+      "key": "clienteId",
+      "value": "uuid-del-cliente",
+      "type": "string"
+    },
+    {
+      "key": "productoId",
+      "value": "uuid-del-producto",
+      "type": "string"
+    },
+    {
+      "key": "pedidoId",
+      "value": "uuid-del-pedido",
+      "type": "string"
+    },
+    {
+      "key": "proveedorId",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "pagoId",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "envioId",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "usuarioId",
+      "value": "1",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth (ms-auth · 8081)",
+      "description": "Autenticación y autorización. Las rutas /api/auth/** son públicas — no requieren token.",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var json = pm.response.json();",
+                  "if (json.token) {",
+                  "    pm.collectionVariables.set('token', json.token);",
+                  "    console.log('Token guardado: ' + json.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"usuario@smartlogix.com\",\n  \"password\": \"contraseña123\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            },
+            "description": "Autentica al usuario y devuelve un JWT. El script de test guarda automáticamente el token en la variable `token`."
+          }
+        },
+        {
+          "name": "Registro",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"nuevo@smartlogix.com\",\n  \"password\": \"contraseña123\",\n  \"rol\": \"USER\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/registro",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "registro"]
+            },
+            "description": "Registra un nuevo usuario. Roles disponibles: USER, ADMIN."
+          }
+        },
+        {
+          "name": "Validar Token",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/validar",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "validar"]
+            },
+            "description": "Valida si el token JWT del header es válido. Devuelve true/false."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Clientes (ms-clientes · 8082)",
+      "description": "Gestión de clientes. Todos los endpoints requieren JWT.",
+      "item": [
+        {
+          "name": "Listar clientes",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/clientes",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "clientes"]
+            }
+          }
+        },
+        {
+          "name": "Crear cliente",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Juan Pérez\",\n  \"rut\": \"12345678-9\",\n  \"email\": \"juan@empresa.cl\",\n  \"telefono\": \"+56912345678\",\n  \"direccion\": \"Av. Providencia 1234, Santiago\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/clientes",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "clientes"]
+            },
+            "description": "Nombre, RUT y email son obligatorios. El email y RUT deben ser únicos."
+          }
+        },
+        {
+          "name": "Obtener cliente por ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/clientes/{{clienteId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "clientes", "{{clienteId}}"]
+            }
+          }
+        },
+        {
+          "name": "Actualizar cliente",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Juan Pérez Actualizado\",\n  \"rut\": \"12345678-9\",\n  \"email\": \"juan.nuevo@empresa.cl\",\n  \"telefono\": \"+56987654321\",\n  \"direccion\": \"Calle Nueva 456, Santiago\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/clientes/{{clienteId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "clientes", "{{clienteId}}"]
+            }
+          }
+        },
+        {
+          "name": "Pedidos de un cliente",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/clientes/{{clienteId}}/pedidos",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "clientes", "{{clienteId}}", "pedidos"]
+            },
+            "description": "Obtiene los pedidos asociados a un cliente. Consulta ms-pedidos internamente via Feign."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Inventario (ms-inventario · 8083)",
+      "description": "Gestión del catálogo de productos y stock. Todos los endpoints requieren JWT.",
+      "item": [
+        {
+          "name": "Listar productos",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/inventario/productos",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "inventario", "productos"]
+            }
+          }
+        },
+        {
+          "name": "Crear producto",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Tornillo M8\",\n  \"descripcion\": \"Tornillo Allen M8 x 30mm\",\n  \"precio\": 150.00,\n  \"stock\": 500,\n  \"stockMinimo\": 50,\n  \"bodegaId\": \"bodega-central\",\n  \"proveedorId\": \"{{proveedorId}}\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/inventario/productos",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "inventario", "productos"]
+            }
+          }
+        },
+        {
+          "name": "Obtener producto por ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/inventario/productos/{{productoId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "inventario", "productos", "{{productoId}}"]
+            }
+          }
+        },
+        {
+          "name": "Actualizar producto",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Tornillo M8 Actualizado\",\n  \"descripcion\": \"Tornillo Allen M8 x 40mm\",\n  \"precio\": 175.00,\n  \"stock\": 480,\n  \"stockMinimo\": 50,\n  \"bodegaId\": \"bodega-central\",\n  \"proveedorId\": \"{{proveedorId}}\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/inventario/productos/{{productoId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "inventario", "productos", "{{productoId}}"]
+            }
+          }
+        },
+        {
+          "name": "Actualizar stock",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/inventario/productos/{{productoId}}/stock?cantidad=-10",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "inventario", "productos", "{{productoId}}", "stock"],
+              "query": [
+                {
+                  "key": "cantidad",
+                  "value": "-10",
+                  "description": "Positivo para sumar, negativo para restar stock"
+                }
+              ]
+            },
+            "description": "Ajusta el stock. Positivo suma unidades, negativo las descuenta. Falla si el resultado sería negativo."
+          }
+        },
+        {
+          "name": "Productos con bajo stock",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/inventario/productos/bajo-stock",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "inventario", "productos", "bajo-stock"]
+            },
+            "description": "Devuelve productos con stock ≤ 10 unidades."
+          }
+        },
+        {
+          "name": "Eliminar producto",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/inventario/productos/{{productoId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "inventario", "productos", "{{productoId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Pedidos (ms-pedidos · 8084)",
+      "description": "Gestión de pedidos. Al crear un pedido, orquesta automáticamente stock, pago, envío y notificación. Todos los endpoints requieren JWT.",
+      "item": [
+        {
+          "name": "Listar pedidos",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/pedidos",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pedidos"]
+            }
+          }
+        },
+        {
+          "name": "Crear pedido",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"clienteId\": \"{{clienteId}}\",\n  \"tipo\": \"NORMAL\",\n  \"productos\": [\n    {\n      \"productoId\": \"{{productoId}}\",\n      \"cantidad\": 3\n    }\n  ]\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/pedidos",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pedidos"]
+            },
+            "description": "Crea el pedido y orquesta: descuenta stock en inventario, procesa pago, crea envío y envía notificación al cliente. Estado inicial: PENDIENTE."
+          }
+        },
+        {
+          "name": "Obtener pedido por ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/pedidos/{{pedidoId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pedidos", "{{pedidoId}}"]
+            }
+          }
+        },
+        {
+          "name": "Actualizar estado del pedido",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"estado\": \"ENTREGADO\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/pedidos/{{pedidoId}}/estado",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pedidos", "{{pedidoId}}", "estado"]
+            },
+            "description": "Estados posibles: PENDIENTE, EN_PROCESO, ENVIADO, ENTREGADO, CANCELADO. Al actualizar se envía notificación automáticamente."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Envíos (ms-envios · 8085)",
+      "description": "Gestión de envíos. El tracking number se genera automáticamente. Todos los endpoints requieren JWT.",
+      "item": [
+        {
+          "name": "Crear envío",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pedido_id\": \"{{pedidoId}}\",\n  \"transportista\": \"Chilexpress\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/envios/crear",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "envios", "crear"]
+            },
+            "description": "Crea el envío. El tracking number (8 caracteres aleatorios) y el estado inicial PREPARANDO se asignan automáticamente. Notifica al cliente via ms-notificaciones."
+          }
+        },
+        {
+          "name": "Listar envíos",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/envios",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "envios"]
+            }
+          }
+        },
+        {
+          "name": "Obtener envío por ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/envios/{{envioId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "envios", "{{envioId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Proveedores (ms-proveedores · 8086)",
+      "description": "Gestión de proveedores. CRUD completo. Todos los endpoints requieren JWT.",
+      "item": [
+        {
+          "name": "Listar proveedores",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/proveedores",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "proveedores"]
+            }
+          }
+        },
+        {
+          "name": "Crear proveedor",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Distribuidora ABC Ltda.\",\n  \"email\": \"ventas@abc.cl\",\n  \"telefono\": \"+56222345678\",\n  \"direccion\": \"Av. Industrial 456, Santiago\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/proveedores",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "proveedores"]
+            },
+            "description": "El campo nombre es obligatorio. El email es opcional pero, si se incluye, debe tener formato válido."
+          }
+        },
+        {
+          "name": "Obtener proveedor por ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/proveedores/{{proveedorId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "proveedores", "{{proveedorId}}"]
+            }
+          }
+        },
+        {
+          "name": "Actualizar proveedor",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Distribuidora ABC Actualizada\",\n  \"email\": \"contacto@abc.cl\",\n  \"telefono\": \"+56222987654\",\n  \"direccion\": \"Calle Nueva 789, Santiago\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/proveedores/{{proveedorId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "proveedores", "{{proveedorId}}"]
+            }
+          }
+        },
+        {
+          "name": "Eliminar proveedor",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/proveedores/{{proveedorId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "proveedores", "{{proveedorId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Pagos (ms-pagos · 8087)",
+      "description": "Procesamiento y consulta de pagos. Todos los endpoints requieren JWT.",
+      "item": [
+        {
+          "name": "Procesar pago",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pedidoId\": 1001,\n  \"monto\": 75000.00,\n  \"metodoPago\": \"TARJETA\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/pagos/procesar",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pagos", "procesar"]
+            },
+            "description": "Registra el pago. Estado inicial siempre PROCESADO. El monto debe ser mayor a 0."
+          }
+        },
+        {
+          "name": "Obtener pago por ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/pagos/{{pagoId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pagos", "{{pagoId}}"]
+            }
+          }
+        },
+        {
+          "name": "Pagos por pedido",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/pagos/pedido/{{pedidoId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pagos", "pedido", "{{pedidoId}}"]
+            }
+          }
+        },
+        {
+          "name": "Listar pagos",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/pagos",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pagos"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Notificaciones (ms-notificaciones · 8088)",
+      "description": "Envío y consulta de notificaciones. Todos los endpoints requieren JWT.",
+      "item": [
+        {
+          "name": "Enviar notificación",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"usuarioId\": {{usuarioId}},\n  \"mensaje\": \"Tu pedido ha sido creado exitosamente\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/notificaciones/enviar",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "notificaciones", "enviar"]
+            },
+            "description": "usuarioId y mensaje son obligatorios. La fechaEnvio se asigna automáticamente."
+          }
+        },
+        {
+          "name": "Notificaciones por usuario",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/notificaciones/usuario/{{usuarioId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "notificaciones", "usuario", "{{usuarioId}}"]
+            }
+          }
+        },
+        {
+          "name": "Listar todas las notificaciones",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/notificaciones",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "notificaciones"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reportes (ms-reportes · 8089)",
+      "description": "Reportes y analítica. Agrega datos de ms-pedidos y ms-inventario en tiempo real. Todos los endpoints requieren JWT.",
+      "item": [
+        {
+          "name": "Reporte de ventas",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/reportes/ventas",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "reportes", "ventas"]
+            },
+            "description": "Devuelve: totalPedidos, pedidosCompletados (estado ENTREGADO), pedidosPendientes, totalRecaudado y ticketPromedio."
+          }
+        },
+        {
+          "name": "Reporte de inventario",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/reportes/inventario",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "reportes", "inventario"]
+            },
+            "description": "Devuelve: totalProductos, productosBajoStock (stock <= stockMinimo) y valorTotalInventario."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Eureka (ms-eureka · 8761)",
+      "description": "Servidor de descubrimiento de servicios. Acceso directo — no pasa por el gateway.",
+      "item": [
+        {
+          "name": "Dashboard Eureka",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8761",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8761"
+            },
+            "description": "Interfaz web de Eureka. Muestra los microservicios registrados y su estado."
+          }
+        },
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8761/actuator/health",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8761",
+              "path": ["actuator", "health"]
+            },
+            "description": "Endpoint de salud usado por Docker Compose para el healthcheck."
+          }
+        },
+        {
+          "name": "Aplicaciones registradas",
+          "request": {
+            "method": "GET",
+            "header": [
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "http://localhost:8761/eureka/apps",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8761",
+              "path": ["eureka", "apps"]
+            },
+            "description": "Lista todas las aplicaciones registradas en Eureka con sus instancias."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Swagger UI (acceso directo por microservicio)",
+      "description": "Acceso directo a la documentación Swagger de cada microservicio, sin pasar por el gateway.",
+      "item": [
+        {
+          "name": "Swagger — ms-auth",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8081/swagger-ui/index.html",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8081",
+              "path": ["swagger-ui", "index.html"]
+            }
+          }
+        },
+        {
+          "name": "Swagger — ms-clientes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/swagger-ui/index.html",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8082",
+              "path": ["swagger-ui", "index.html"]
+            }
+          }
+        },
+        {
+          "name": "Swagger — ms-inventario",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8083/swagger-ui/index.html",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8083",
+              "path": ["swagger-ui", "index.html"]
+            }
+          }
+        },
+        {
+          "name": "Swagger — ms-pedidos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8084/swagger-ui/index.html",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8084",
+              "path": ["swagger-ui", "index.html"]
+            }
+          }
+        },
+        {
+          "name": "Swagger — ms-envios",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8085/swagger-ui/index.html",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8085",
+              "path": ["swagger-ui", "index.html"]
+            }
+          }
+        },
+        {
+          "name": "Swagger — ms-proveedores",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8086/swagger-ui/index.html",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8086",
+              "path": ["swagger-ui", "index.html"]
+            }
+          }
+        },
+        {
+          "name": "Swagger — ms-pagos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8087/swagger-ui/index.html",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8087",
+              "path": ["swagger-ui", "index.html"]
+            }
+          }
+        },
+        {
+          "name": "Swagger — ms-notificaciones",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8088/swagger-ui/index.html",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8088",
+              "path": ["swagger-ui", "index.html"]
+            }
+          }
+        },
+        {
+          "name": "Swagger — ms-reportes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8089/swagger-ui/index.html",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "8089",
+              "path": ["swagger-ui", "index.html"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

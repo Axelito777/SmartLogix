@@ -9,13 +9,26 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Servicio de negocio para la gestión del inventario de productos.
+ * <p>
+ * Implementa las operaciones CRUD sobre {@link com.smartlogix.ms_inventario.model.Producto},
+ * el control de stock con validación de negativos y la consulta de productos con bajo stock.
+ * </p>
+ *
+ * @author SmartLogix Team
+ */
 @Service
 @RequiredArgsConstructor
 public class ProductoService {
 
     private final ProductoRepository productoRepository;
 
-    // Listar todos los productos
+    /**
+     * Retorna el catálogo completo de productos.
+     *
+     * @return lista de {@link ProductoResponse}; vacía si no hay productos
+     */
     public List<ProductoResponse> listar() {
         return productoRepository.findAll()
                 .stream()
@@ -23,7 +36,13 @@ public class ProductoService {
                 .collect(Collectors.toList());
     }
 
-    // Obtener un producto por id
+    /**
+     * Obtiene un producto por su identificador UUID.
+     *
+     * @param id identificador UUID del producto
+     * @return {@link ProductoResponse} con los datos del producto
+     * @throws RuntimeException si no existe el producto
+     */
     public ProductoResponse obtener(String id) {
         Producto producto = productoRepository.findById(id)
                 .orElseThrow(() ->
@@ -31,7 +50,12 @@ public class ProductoService {
         return convertirAResponse(producto);
     }
 
-    // Crear un producto nuevo
+    /**
+     * Crea y persiste un nuevo producto en el inventario.
+     *
+     * @param request datos del producto a registrar
+     * @return {@link ProductoResponse} del producto recién creado
+     */
     public ProductoResponse crear(ProductoRequest request) {
         Producto producto = new Producto();
         producto.setNombre(request.getNombre());
@@ -46,7 +70,14 @@ public class ProductoService {
         return convertirAResponse(producto);
     }
 
-    // Actualizar stock
+    /**
+     * Ajusta el stock de un producto sumando la cantidad indicada (puede ser negativa).
+     *
+     * @param id      identificador UUID del producto
+     * @param cantidad cantidad a sumar (positivo) o restar (negativo) al stock actual
+     * @return {@link ProductoResponse} con el stock actualizado
+     * @throws RuntimeException si el producto no existe o el stock resultante sería negativo
+     */
     public ProductoResponse actualizarStock(
             String id, Integer cantidad) {
         Producto producto = productoRepository.findById(id)
@@ -64,7 +95,11 @@ public class ProductoService {
         return convertirAResponse(producto);
     }
 
-    // Productos con bajo stock
+    /**
+     * Retorna los productos con stock igual o inferior a 10 unidades.
+     *
+     * @return lista de {@link ProductoResponse} con bajo stock; vacía si todos tienen stock suficiente
+     */
     public List<ProductoResponse> bajoStock() {
         return productoRepository
                 .findByStockLessThanEqual(10)
@@ -73,7 +108,6 @@ public class ProductoService {
                 .collect(Collectors.toList());
     }
 
-    // Convierte Producto a ProductoResponse
     private ProductoResponse convertirAResponse(Producto producto) {
         return new ProductoResponse(
                 producto.getId(),
@@ -88,7 +122,14 @@ public class ProductoService {
         );
     }
 
-    // Actualizar producto completo
+    /**
+     * Actualiza todos los datos de un producto existente.
+     *
+     * @param id      identificador UUID del producto
+     * @param request nuevos datos del producto
+     * @return {@link ProductoResponse} con los datos actualizados
+     * @throws RuntimeException si no existe el producto
+     */
     public ProductoResponse actualizar(String id, ProductoRequest request) {
         Producto producto = productoRepository.findById(id)
                 .orElseThrow(() ->
@@ -106,7 +147,12 @@ public class ProductoService {
         return convertirAResponse(producto);
     }
 
-    // Eliminar producto
+    /**
+     * Elimina un producto del inventario.
+     *
+     * @param id identificador UUID del producto a eliminar
+     * @throws RuntimeException si no existe el producto
+     */
     public void eliminar(String id) {
         productoRepository.findById(id)
                 .orElseThrow(() ->
