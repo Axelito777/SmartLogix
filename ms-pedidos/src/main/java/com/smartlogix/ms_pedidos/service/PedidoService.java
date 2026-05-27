@@ -13,6 +13,17 @@ import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Servicio de negocio para la gestión de pedidos.
+ * <p>
+ * Orquesta el flujo de creación de pedidos: descuenta stock en {@code ms-inventario},
+ * procesa el pago en {@code ms-pagos}, crea el envío en {@code ms-envios}
+ * y notifica al cliente vía {@code ms-notificaciones}. Los fallos en servicios
+ * auxiliares se ignoran para no bloquear la creación del pedido.
+ * </p>
+ *
+ * @author SmartLogix Team
+ */
 @Service
 @RequiredArgsConstructor
 public class PedidoService {
@@ -23,7 +34,11 @@ public class PedidoService {
     private final EnviosClient enviosClient;
     private final NotificacionesClient notificacionesClient;
 
-    // Listar todos los pedidos
+    /**
+     * Retorna la lista completa de pedidos.
+     *
+     * @return lista de {@link PedidoResponse}; vacía si no hay pedidos
+     */
     public List<PedidoResponse> listar() {
         return pedidoRepository.findAll()
                 .stream()
@@ -31,7 +46,13 @@ public class PedidoService {
                 .collect(Collectors.toList());
     }
 
-    // Obtener un pedido por id
+    /**
+     * Obtiene un pedido por su identificador UUID.
+     *
+     * @param id identificador UUID del pedido
+     * @return {@link PedidoResponse} con los datos del pedido
+     * @throws RuntimeException si no existe el pedido
+     */
     public PedidoResponse obtener(String id) {
         Pedido pedido = pedidoRepository.findById(id)
                 .orElseThrow(() ->
@@ -39,6 +60,16 @@ public class PedidoService {
         return convertirAResponse(pedido);
     }
 
+    /**
+     * Crea un pedido orquestando el descuento de stock, pago, envío y notificación.
+     * <p>
+     * Las llamadas a servicios auxiliares (inventario, pagos, envíos, notificaciones)
+     * se ejecutan de forma tolerante a fallos: si alguna falla, el pedido se crea igualmente.
+     * </p>
+     *
+     * @param request datos del pedido con cliente, tipo y líneas de producto
+     * @return {@link PedidoResponse} del pedido creado con el total calculado
+     */
     public PedidoResponse crear(PedidoRequest request) {
 
         // 1. Crea el pedido
@@ -100,7 +131,14 @@ public class PedidoService {
         return convertirAResponse(pedido);
     }
 
-    // Actualizar estado del pedido
+    /**
+     * Actualiza el estado de un pedido y envía una notificación al cliente.
+     *
+     * @param id     identificador UUID del pedido
+     * @param estado nuevo estado del pedido (ej. {@code ENVIADO}, {@code ENTREGADO})
+     * @return {@link PedidoResponse} con el estado actualizado
+     * @throws RuntimeException si no existe el pedido
+     */
     public PedidoResponse actualizarEstado(
             String id, String estado) {
         Pedido pedido = pedidoRepository.findById(id)
