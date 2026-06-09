@@ -4,6 +4,7 @@ import com.smartlogix.ms_pedidos.client.EnviosClient;
 import com.smartlogix.ms_pedidos.client.InventarioClient;
 import com.smartlogix.ms_pedidos.client.NotificacionesClient;
 import com.smartlogix.ms_pedidos.client.PagosClient;
+import com.smartlogix.ms_pedidos.messaging.PedidoProducer;
 import com.smartlogix.ms_pedidos.dto.DetallePedidoRequest;
 import com.smartlogix.ms_pedidos.dto.PedidoRequest;
 import com.smartlogix.ms_pedidos.dto.PedidoResponse;
@@ -33,6 +34,7 @@ class PedidoServiceTest {
     @Mock private PagosClient pagosClient;
     @Mock private EnviosClient enviosClient;
     @Mock private NotificacionesClient notificacionesClient;
+    @Mock private PedidoProducer pedidoProducer;
     @InjectMocks private PedidoService pedidoService;
 
     private Pedido pedido;

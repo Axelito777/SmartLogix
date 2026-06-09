@@ -5,6 +5,8 @@ import com.smartlogix.ms_pedidos.client.PagosClient;
 import com.smartlogix.ms_pedidos.client.EnviosClient;
 import com.smartlogix.ms_pedidos.client.NotificacionesClient;
 import com.smartlogix.ms_pedidos.dto.*;
+import com.smartlogix.ms_pedidos.messaging.PedidoEventoDTO;
+import com.smartlogix.ms_pedidos.messaging.PedidoProducer;
 import com.smartlogix.ms_pedidos.model.*;
 import com.smartlogix.ms_pedidos.repository.PedidoRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +35,7 @@ public class PedidoService {
     private final PagosClient pagosClient;
     private final EnviosClient enviosClient;
     private final NotificacionesClient notificacionesClient;
+    private final PedidoProducer pedidoProducer;
 
     /**
      * Retorna la lista completa de pedidos.
@@ -120,12 +123,18 @@ public class PedidoService {
             enviosClient.crearEnvio(envio);
         } catch (Exception ignored) {}
 
-        // 6. Notifica al cliente
+        // 6. Notifica al cliente vía Feign (tolerante a fallos)
         try {
             Map<String, Object> notificacion = new HashMap<>();
             notificacion.put("usuarioId", 1L);
             notificacion.put("mensaje", "Tu pedido fue creado exitosamente");
             notificacionesClient.enviarNotificacion(notificacion);
+        } catch (Exception ignored) {}
+
+        // 7. Publica evento en RabbitMQ
+        try {
+            pedidoProducer.enviarPedidoCreado(
+                new PedidoEventoDTO(pedido.getId(), pedido.getClienteId(), total));
         } catch (Exception ignored) {}
 
         return convertirAResponse(pedido);
