@@ -4,6 +4,11 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Pruebas unitarias de la entidad {@link Proveedor}.
+ *
+ * @author SmartLogix Team
+ */
 class ProveedorModelTest {
     @Test void settersGetters() {
         Proveedor p = new Proveedor();

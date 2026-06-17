@@ -3,6 +3,11 @@ package com.smartlogix.ms_proveedores.dto;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Pruebas unitarias del DTO {@link ProveedorRequest}.
+ *
+ * @author SmartLogix Team
+ */
 class ProveedorRequestTest {
     @Test void gettersSetters() {
         ProveedorRequest r = new ProveedorRequest();

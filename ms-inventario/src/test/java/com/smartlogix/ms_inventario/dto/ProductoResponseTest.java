@@ -5,6 +5,11 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Pruebas unitarias del DTO {@link ProductoResponse}.
+ *
+ * @author SmartLogix Team
+ */
 class ProductoResponseTest {
     @Test void constructor_y_getters() {
         LocalDateTime now = LocalDateTime.now();

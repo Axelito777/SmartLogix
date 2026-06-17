@@ -4,6 +4,11 @@ import lombok.Data;
 import lombok.AllArgsConstructor;
 import java.time.LocalDateTime;
 
+/**
+ * DTO de salida con los datos públicos de un envío.
+ *
+ * @author SmartLogix Team
+ */
 @Data
 @AllArgsConstructor
 public class EnvioResponse {

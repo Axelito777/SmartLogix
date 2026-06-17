@@ -3,6 +3,11 @@ package com.smartlogix.ms_inventario.dto;
 import lombok.Data;
 import java.math.BigDecimal;
 
+/**
+ * DTO de entrada con los datos requeridos para crear o actualizar un producto.
+ *
+ * @author SmartLogix Team
+ */
 @Data
 public class ProductoRequest {
     private String nombre;

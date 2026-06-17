@@ -4,6 +4,11 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Pruebas unitarias del DTO {@link PedidoDTO}.
+ *
+ * @author SmartLogix Team
+ */
 class PedidoDTOTest {
     @Test void gettersSetters() {
         PedidoDTO d = new PedidoDTO();

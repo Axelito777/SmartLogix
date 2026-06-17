@@ -20,6 +20,12 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+/**
+ * Pruebas unitarias de {@code ProveedorService} usando un mock de
+ * {@link ProveedorRepository}.
+ *
+ * @author SmartLogix Team
+ */
 @ExtendWith(MockitoExtension.class)
 class ProveedorServiceTest {
 

@@ -4,6 +4,11 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Pruebas unitarias del DTO {@link ReporteVentasDTO}.
+ *
+ * @author SmartLogix Team
+ */
 class ReporteVentasDTOTest {
     @Test void constructor_y_getters() {
         ReporteVentasDTO r = new ReporteVentasDTO(10, 7, 3, new BigDecimal("100000"), new BigDecimal("14285.71"));

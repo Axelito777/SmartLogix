@@ -6,12 +6,24 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+/**
+ * Inicializador de datos de prueba: crea clientes de ejemplo al arrancar
+ * la aplicación si la base de datos está vacía.
+ *
+ * @author SmartLogix Team
+ */
 @Component
 @RequiredArgsConstructor
 public class DataSeeder implements CommandLineRunner {
 
     private final ClienteRepository clienteRepository;
 
+    /**
+     * Crea un conjunto de clientes de ejemplo si el repositorio no
+     * contiene registros, para facilitar pruebas manuales del servicio.
+     *
+     * @param args argumentos de línea de comandos (no utilizados)
+     */
     @Override
     public void run(String... args) {
         if (clienteRepository.count() == 0) {
@@ -22,6 +34,16 @@ public class DataSeeder implements CommandLineRunner {
         }
     }
 
+    /**
+     * Construye una entidad {@link Cliente} con los datos provistos.
+     *
+     * @param nombre    nombre completo del cliente
+     * @param rut       RUT del cliente
+     * @param email     correo electrónico del cliente
+     * @param telefono  teléfono de contacto del cliente
+     * @param direccion dirección del cliente
+     * @return la entidad {@link Cliente} construida, aún no persistida
+     */
     private Cliente crearCliente(String nombre, String rut, String email, String telefono, String direccion) {
         Cliente c = new Cliente();
         c.setNombre(nombre);

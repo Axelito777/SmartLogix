@@ -4,6 +4,11 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Pruebas unitarias de la entidad {@link Notificacion}.
+ *
+ * @author SmartLogix Team
+ */
 class NotificacionModelTest {
     @Test void settersGetters() {
         Notificacion n = new Notificacion();

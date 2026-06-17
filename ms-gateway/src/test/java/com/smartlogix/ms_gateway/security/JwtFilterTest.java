@@ -21,6 +21,11 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+/**
+ * Pruebas unitarias de {@code JwtFilter} usando un mock de {@link JwtUtil}.
+ *
+ * @author SmartLogix Team
+ */
 @ExtendWith(MockitoExtension.class)
 class JwtFilterTest {
 

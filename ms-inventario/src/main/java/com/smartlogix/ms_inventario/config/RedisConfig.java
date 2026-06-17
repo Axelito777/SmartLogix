@@ -15,10 +15,23 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import java.time.Duration;
 
+/**
+ * Configuración de caché Redis del microservicio de inventario.
+ *
+ * @author SmartLogix Team
+ */
 @Configuration
 @EnableCaching
 public class RedisConfig {
 
+    /**
+     * Construye el administrador de caché Redis con serialización JSON
+     * (incluyendo soporte para tipos de fecha/hora de Java 8) y un tiempo
+     * de expiración de 10 minutos por entrada.
+     *
+     * @param connectionFactory fábrica de conexiones Redis provista por Spring Data Redis
+     * @return el {@link RedisCacheManager} configurado
+     */
     @Bean
     public RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory) {
         ObjectMapper mapper = new ObjectMapper();

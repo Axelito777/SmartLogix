@@ -5,6 +5,11 @@ import lombok.AllArgsConstructor;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+/**
+ * DTO de salida con los datos públicos de un pedido.
+ *
+ * @author SmartLogix Team
+ */
 @Data
 @AllArgsConstructor
 public class PedidoResponse {

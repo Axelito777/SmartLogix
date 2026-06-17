@@ -3,6 +3,11 @@ package com.smartlogix.ms_pagos.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
+/**
+ * Entidad JPA que representa el pago asociado a un pedido.
+ *
+ * @author SmartLogix Team
+ */
 @Data
 @Entity
 @Table(name = "pagos")

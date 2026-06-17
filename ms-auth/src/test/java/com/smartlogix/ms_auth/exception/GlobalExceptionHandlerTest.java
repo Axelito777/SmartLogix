@@ -8,6 +8,11 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Pruebas unitarias de {@link GlobalExceptionHandler}.
+ *
+ * @author SmartLogix Team
+ */
 class GlobalExceptionHandlerTest {
 
     private final GlobalExceptionHandler handler = new GlobalExceptionHandler();

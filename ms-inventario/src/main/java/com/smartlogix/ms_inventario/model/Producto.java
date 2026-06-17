@@ -5,6 +5,12 @@ import lombok.Data;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+/**
+ * Entidad JPA que representa un producto del inventario, con su stock
+ * disponible, stock mínimo y referencias a bodega y proveedor.
+ *
+ * @author SmartLogix Team
+ */
 @Data
 @Entity
 @Table(name = "productos")
@@ -40,12 +46,20 @@ public class Producto {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
+    /**
+     * Inicializa las marcas de tiempo de creación y actualización antes de
+     * persistir el producto por primera vez.
+     */
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
     }
 
+    /**
+     * Actualiza la marca de tiempo de última modificación antes de
+     * persistir un cambio sobre el producto.
+     */
     @PreUpdate
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();

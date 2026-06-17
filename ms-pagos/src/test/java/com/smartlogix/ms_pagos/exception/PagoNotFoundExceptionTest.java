@@ -3,6 +3,11 @@ package com.smartlogix.ms_pagos.exception;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Pruebas unitarias de {@link PagoNotFoundException}.
+ *
+ * @author SmartLogix Team
+ */
 class PagoNotFoundExceptionTest {
     @Test void constructor_mensajeContieneId() {
         PagoNotFoundException ex = new PagoNotFoundException(5L);

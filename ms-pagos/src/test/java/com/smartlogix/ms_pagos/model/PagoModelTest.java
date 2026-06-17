@@ -3,6 +3,11 @@ package com.smartlogix.ms_pagos.model;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Pruebas unitarias de la entidad {@link Pago}.
+ *
+ * @author SmartLogix Team
+ */
 class PagoModelTest {
     @Test void settersGetters() {
         Pago p = new Pago();

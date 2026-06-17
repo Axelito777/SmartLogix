@@ -6,6 +6,11 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Pruebas unitarias de la entidad {@link Usuario}.
+ *
+ * @author SmartLogix Team
+ */
 class UsuarioModelTest {
 
     @Test

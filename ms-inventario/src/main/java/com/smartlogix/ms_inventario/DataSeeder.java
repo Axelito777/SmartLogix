@@ -7,12 +7,24 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 
+/**
+ * Inicializador de datos de prueba: crea productos de ejemplo al
+ * arrancar la aplicación si la base de datos está vacía.
+ *
+ * @author SmartLogix Team
+ */
 @Component
 @RequiredArgsConstructor
 public class DataSeeder implements CommandLineRunner {
 
     private final ProductoRepository productoRepository;
 
+    /**
+     * Crea un conjunto de productos de ejemplo si el repositorio no
+     * contiene registros, para facilitar pruebas manuales del servicio.
+     *
+     * @param args argumentos de línea de comandos (no utilizados)
+     */
     @Override
     public void run(String... args) {
         if (productoRepository.count() == 0) {
@@ -25,6 +37,16 @@ public class DataSeeder implements CommandLineRunner {
         }
     }
 
+    /**
+     * Construye una entidad {@link Producto} con los datos provistos.
+     *
+     * @param nombre      nombre del producto
+     * @param descripcion descripción del producto
+     * @param precio      precio unitario del producto
+     * @param stock       cantidad disponible en inventario
+     * @param stockMinimo umbral mínimo de stock antes de alertar reposición
+     * @return la entidad {@link Producto} construida, aún no persistida
+     */
     private Producto crearProducto(String nombre, String descripcion, BigDecimal precio, int stock, int stockMinimo) {
         Producto p = new Producto();
         p.setNombre(nombre);

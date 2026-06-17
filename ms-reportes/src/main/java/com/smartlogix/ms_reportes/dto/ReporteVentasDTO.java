@@ -4,6 +4,12 @@ import lombok.Data;
 import lombok.AllArgsConstructor;
 import java.math.BigDecimal;
 
+/**
+ * DTO con el reporte agregado de ventas: totales de pedidos por estado,
+ * monto recaudado y ticket promedio.
+ *
+ * @author SmartLogix Team
+ */
 @Data
 @AllArgsConstructor
 public class ReporteVentasDTO {

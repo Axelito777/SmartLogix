@@ -4,6 +4,11 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Data;
 
+/**
+ * DTO de entrada con los datos requeridos para registrar un pago.
+ *
+ * @author SmartLogix Team
+ */
 @Data
 public class PagoRequest {
 

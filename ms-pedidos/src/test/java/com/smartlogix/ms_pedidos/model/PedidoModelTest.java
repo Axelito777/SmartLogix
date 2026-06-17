@@ -6,6 +6,11 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Pruebas unitarias de la entidad {@link Pedido}.
+ *
+ * @author SmartLogix Team
+ */
 class PedidoModelTest {
     @Test void settersGetters() {
         Pedido p = new Pedido();

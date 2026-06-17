@@ -3,6 +3,11 @@ package com.smartlogix.ms_envios.exception;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Pruebas unitarias de {@link EnvioNotFoundException}.
+ *
+ * @author SmartLogix Team
+ */
 class EnvioNotFoundExceptionTest {
     @Test
     void constructor_mensajeContieneId() {

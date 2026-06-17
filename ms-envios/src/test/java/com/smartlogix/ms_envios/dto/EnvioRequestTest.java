@@ -3,6 +3,11 @@ package com.smartlogix.ms_envios.dto;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Pruebas unitarias del DTO {@link EnvioRequest}.
+ *
+ * @author SmartLogix Team
+ */
 class EnvioRequestTest {
     @Test void gettersSetters() {
         EnvioRequest r = new EnvioRequest();

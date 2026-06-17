@@ -8,9 +8,21 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Manejador global de excepciones del microservicio de pagos.
+ *
+ * @author SmartLogix Team
+ */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    /**
+     * Captura {@link PagoNotFoundException} y la convierte en una
+     * respuesta HTTP 404 con el mensaje de error.
+     *
+     * @param ex excepción lanzada cuando no se encuentra el pago solicitado
+     * @return respuesta con estado 404 y el mensaje de error
+     */
     @ExceptionHandler(PagoNotFoundException.class)
     public ResponseEntity<Map<String, String>> handleNotFound(PagoNotFoundException ex) {
         Map<String, String> error = new HashMap<>();
@@ -18,6 +30,13 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
+    /**
+     * Captura los errores de validación de Bean Validation y los convierte
+     * en una respuesta HTTP 400 con un mapa campo→mensaje.
+     *
+     * @param ex excepción lanzada por Spring al fallar la validación del request body
+     * @return respuesta con estado 400 y los errores de validación por campo
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidation(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();

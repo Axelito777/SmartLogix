@@ -19,6 +19,12 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Pruebas unitarias de {@code ReporteService} usando mocks de
+ * {@link PedidosClient} e {@link InventarioClient}.
+ *
+ * @author SmartLogix Team
+ */
 @ExtendWith(MockitoExtension.class)
 class ReporteServiceTest {
 

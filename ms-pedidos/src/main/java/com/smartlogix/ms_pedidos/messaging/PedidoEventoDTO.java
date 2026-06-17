@@ -6,6 +6,12 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
+/**
+ * DTO del evento de pedido creado, publicado en RabbitMQ para que lo
+ * consuma el microservicio ms-notificaciones.
+ *
+ * @author SmartLogix Team
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

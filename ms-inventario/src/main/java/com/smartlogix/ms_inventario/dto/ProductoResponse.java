@@ -6,6 +6,11 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+/**
+ * DTO de salida con los datos públicos de un producto.
+ *
+ * @author SmartLogix Team
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

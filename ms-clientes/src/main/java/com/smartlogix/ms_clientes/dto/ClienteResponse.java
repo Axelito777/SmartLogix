@@ -5,6 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
+/**
+ * DTO de salida con los datos públicos de un cliente.
+ *
+ * @author SmartLogix Team
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

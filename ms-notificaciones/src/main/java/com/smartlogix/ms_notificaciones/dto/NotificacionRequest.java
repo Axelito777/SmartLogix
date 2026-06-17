@@ -4,6 +4,11 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+/**
+ * DTO de entrada con los datos requeridos para registrar una notificación.
+ *
+ * @author SmartLogix Team
+ */
 @Data
 public class NotificacionRequest {
 

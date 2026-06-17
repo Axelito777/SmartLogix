@@ -3,6 +3,11 @@ package com.smartlogix.ms_notificaciones.dto;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Pruebas unitarias del DTO {@link NotificacionRequest}.
+ *
+ * @author SmartLogix Team
+ */
 class NotificacionRequestTest {
     @Test void gettersSetters() {
         NotificacionRequest r = new NotificacionRequest();

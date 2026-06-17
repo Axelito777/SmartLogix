@@ -4,6 +4,11 @@ import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Pruebas unitarias del DTO {@link NotificacionResponse}.
+ *
+ * @author SmartLogix Team
+ */
 class NotificacionResponseTest {
     @Test void constructor_y_getters() {
         LocalDateTime now = LocalDateTime.now();

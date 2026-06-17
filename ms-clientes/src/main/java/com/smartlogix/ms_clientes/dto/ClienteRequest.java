@@ -4,6 +4,11 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
+/**
+ * DTO de entrada con los datos requeridos para crear o actualizar un cliente.
+ *
+ * @author SmartLogix Team
+ */
 @Data
 public class ClienteRequest {
 

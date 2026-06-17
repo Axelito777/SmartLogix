@@ -5,6 +5,11 @@ import org.springframework.web.cors.reactive.CorsWebFilter;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Pruebas unitarias de {@code GatewayConfig}.
+ *
+ * @author SmartLogix Team
+ */
 class GatewayConfigTest {
 
     @Test

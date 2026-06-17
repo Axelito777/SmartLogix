@@ -4,6 +4,11 @@ import org.junit.jupiter.api.Test;
 import java.util.Collections;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Pruebas unitarias del DTO {@link PedidoRequest}.
+ *
+ * @author SmartLogix Team
+ */
 class PedidoRequestTest {
     @Test void gettersSetters() {
         PedidoRequest r = new PedidoRequest();

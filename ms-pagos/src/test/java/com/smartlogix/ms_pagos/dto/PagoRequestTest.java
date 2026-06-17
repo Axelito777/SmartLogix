@@ -3,6 +3,11 @@ package com.smartlogix.ms_pagos.dto;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Pruebas unitarias del DTO {@link PagoRequest}.
+ *
+ * @author SmartLogix Team
+ */
 class PagoRequestTest {
     @Test void gettersSetters() {
         PagoRequest r = new PagoRequest();

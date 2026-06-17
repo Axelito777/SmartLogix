@@ -4,6 +4,12 @@ import jakarta.persistence.*;
 import lombok.Data;
 import java.math.BigDecimal;
 
+/**
+ * Entidad JPA que representa una línea de detalle de un {@link Pedido}:
+ * el producto solicitado, su cantidad y precio unitario.
+ *
+ * @author SmartLogix Team
+ */
 @Data
 @Entity
 @Table(name = "detalle_pedido")

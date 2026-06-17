@@ -26,6 +26,13 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+/**
+ * Pruebas unitarias de {@code PedidoService} usando mocks de
+ * {@link PedidoRepository}, {@link InventarioClient}, {@link PagosClient},
+ * {@link EnviosClient}, {@link NotificacionesClient} y {@link PedidoProducer}.
+ *
+ * @author SmartLogix Team
+ */
 @ExtendWith(MockitoExtension.class)
 class PedidoServiceTest {
 

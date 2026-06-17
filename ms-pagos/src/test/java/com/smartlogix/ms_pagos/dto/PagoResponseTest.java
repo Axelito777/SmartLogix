@@ -3,6 +3,11 @@ package com.smartlogix.ms_pagos.dto;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Pruebas unitarias del DTO {@link PagoResponse}.
+ *
+ * @author SmartLogix Team
+ */
 class PagoResponseTest {
     @Test void constructor_y_getters() {
         PagoResponse r = new PagoResponse(1L, 100L, 50000.0, "PROCESADO", "TARJETA");

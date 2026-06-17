@@ -5,6 +5,11 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Pruebas unitarias de la entidad {@link Producto}.
+ *
+ * @author SmartLogix Team
+ */
 class ProductoModelTest {
     @Test void settersGetters() {
         Producto p = new Producto();

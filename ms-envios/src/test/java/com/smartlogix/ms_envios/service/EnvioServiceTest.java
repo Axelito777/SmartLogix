@@ -21,6 +21,12 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+/**
+ * Pruebas unitarias de {@code EnvioService} usando mocks de
+ * {@link EnvioRepository} y {@link NotificacionesClient}.
+ *
+ * @author SmartLogix Team
+ */
 @ExtendWith(MockitoExtension.class)
 class EnvioServiceTest {
 

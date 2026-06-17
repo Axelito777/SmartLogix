@@ -11,6 +11,11 @@ import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Pruebas unitarias de {@link JwtUtil}.
+ *
+ * @author SmartLogix Team
+ */
 class JwtUtilTest {
 
     private JwtUtil jwtUtil;

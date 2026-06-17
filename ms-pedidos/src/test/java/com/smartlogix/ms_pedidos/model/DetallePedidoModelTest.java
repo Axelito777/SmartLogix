@@ -4,6 +4,11 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Pruebas unitarias de la entidad {@link DetallePedido}.
+ *
+ * @author SmartLogix Team
+ */
 class DetallePedidoModelTest {
     @Test void settersGetters() {
         DetallePedido d = new DetallePedido();

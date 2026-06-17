@@ -23,6 +23,12 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
+/**
+ * Pruebas unitarias de {@link ClienteService} usando mocks de
+ * {@link ClienteRepository} y {@link PedidosClient}.
+ *
+ * @author SmartLogix Team
+ */
 public class ClienteServiceTest {
 
     @Mock private ClienteRepository clienteRepository;
